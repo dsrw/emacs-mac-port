@@ -5429,6 +5429,9 @@ A non-nil CURRENT-ONLY argument means save only current buffer.  */)
   if (minibuf_level)
     no_message = Qt;
 
+  if (!NILP (Vauto_save_quiet))
+    no_message = Vauto_save_quiet;
+
   if (NILP (no_message))
     {
       old_message_p = push_message ();
@@ -5880,6 +5883,10 @@ If nil, deleting a substantial portion of the text disables auto-save
 in the buffer; this is the default behavior, because the auto-save
 file is usually more useful if it contains the deleted text.  */);
   Vauto_save_include_big_deletions = Qnil;
+
+  DEFVAR_LISP ("auto-save-quiet", Vauto_save_quiet,
+         doc: /* If non-nil, non-error auto save messages are suppressed  */);
+  Vauto_save_quiet = Qnil;
 
 #ifdef HAVE_FSYNC
   DEFVAR_BOOL ("write-region-inhibit-fsync", write_region_inhibit_fsync,
